@@ -22,8 +22,27 @@ public class DocumentMergerApplication implements CommandLineRunner {
 	public void run(String... args) {
 		log.info("Starting DocumentMerger");
 
+		String inputPath = "";
+		String outputPath = "";
+
 		for (int i = 0; i < args.length; ++i) {
-			log.info("args[{}]: {}", i, args[i]);
+
+			if (args[i].equals("-i") && i < args.length - 1) {
+				inputPath = args[i + 1];
+			}
+
+			if (args[i].equals("-o") && i < args.length - 1) {
+				outputPath = args[i + 1];
+			}
+		}
+
+		if (inputPath.isEmpty()) {
+			log.error("Input parameter -i is missing. Please provide an input path.");
+		}
+
+
+		if (outputPath.isEmpty()) {
+			log.error("Output parameter -o is missing. Please provide an output path.");
 		}
 	}
 
