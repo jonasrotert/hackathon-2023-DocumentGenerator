@@ -1,14 +1,17 @@
 package de.itzbund.stplf.documents.documentmerger;
 
-import de.itzbund.stplf.documents.documentmerger.exception.DocumentMergerException;
-import de.itzbund.stplf.documents.documentmerger.load.LoadDataService;
-import de.itzbund.stplf.documents.documentmerger.read.ReadDocumentService;
-import de.itzbund.stplf.documents.documentmerger.write.WriteDocumentService;
-import lombok.extern.log4j.Log4j2;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import de.itzbund.stplf.documents.documentmerger.exception.DocumentMergerException;
+import de.itzbund.stplf.documents.documentmerger.load.LoadDataService;
+import de.itzbund.stplf.documents.documentmerger.merge.MergeService;
+import de.itzbund.stplf.documents.documentmerger.read.ReadDocumentService;
+import de.itzbund.stplf.documents.documentmerger.write.WriteDocumentService;
+import lombok.extern.log4j.Log4j2;
 
 @SpringBootApplication
 @Log4j2
@@ -50,7 +53,6 @@ public class DocumentMergerApplication implements CommandLineRunner {
 			return;
 		}
 
-
 		if (outputPath.isEmpty()) {
 			log.error("Output parameter -o is missing. Please provide an output path.");
 			return;
@@ -58,10 +60,17 @@ public class DocumentMergerApplication implements CommandLineRunner {
 
 		try {
 			final var inputDoc = this.readDocumentService.readDocument(inputPath);
+
+			//Platzhalter ersetzen WIP
+			replacePlaceholder(inputDoc);
+
 			this.writeDocumentService.writeDocument(inputDoc, outputPath);
 		} catch (DocumentMergerException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	void replacePlaceholder(XWPFDocument inputDoc) {
+		MergeService.merge(inputDoc, "{%platzhalter%}", "Ersetzter Text1");
+	}
 }
