@@ -1,6 +1,5 @@
 package de.itzbund.stplf.documents.documentmerger.rest;
 
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
