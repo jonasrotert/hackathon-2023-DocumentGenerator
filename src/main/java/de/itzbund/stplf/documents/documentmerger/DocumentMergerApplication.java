@@ -1,5 +1,7 @@
 package de.itzbund.stplf.documents.documentmerger;
 
+import de.itzbund.stplf.documents.documentmerger.converter.BinaryDataConverter;
+import de.itzbund.stplf.documents.documentmerger.openoffice.OpenOfficeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +13,8 @@ import de.itzbund.stplf.documents.documentmerger.merge.MergeService;
 import de.itzbund.stplf.documents.documentmerger.read.ReadDocumentService;
 import de.itzbund.stplf.documents.documentmerger.write.WriteDocumentService;
 import lombok.extern.log4j.Log4j2;
+
+import java.io.IOException;
 
 @SpringBootApplication
 @Log4j2
@@ -24,6 +28,9 @@ public class DocumentMergerApplication implements CommandLineRunner {
 
 	@Autowired
 	private WriteDocumentService writeDocumentService;
+
+	@Autowired
+	private OpenOfficeClient openOfficeClient;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DocumentMergerApplication.class, args);
@@ -71,10 +78,14 @@ public class DocumentMergerApplication implements CommandLineRunner {
 			
 			MergeService.merge(inputDoc, loadDataService.loadData(dataPath));
 
+			// Upload of OpenOffice
+			this.openOfficeClient.uploadFile(this.writeDocumentService.getFileName(outputPath), BinaryDataConverter.convert(inputDoc));
 			this.writeDocumentService.writeDocument(inputDoc, outputPath);
 		} catch (DocumentMergerException e) {
 			throw new RuntimeException(e);
-		}
-	}
+		} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	
 }

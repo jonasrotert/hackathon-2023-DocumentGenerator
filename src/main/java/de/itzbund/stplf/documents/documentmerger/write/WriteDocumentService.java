@@ -2,6 +2,7 @@ package de.itzbund.stplf.documents.documentmerger.write;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Paths;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,10 @@ public class WriteDocumentService {
 			throw new DocumentMergerException("Document cannot be written.");
 		}
 
+	}
+
+	public String getFileName(final String filePath) {
+		return Paths.get(filePath).getFileName().toString();
 	}
 
 }
