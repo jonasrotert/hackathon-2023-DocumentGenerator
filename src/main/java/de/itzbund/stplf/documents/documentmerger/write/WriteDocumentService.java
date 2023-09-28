@@ -1,12 +1,13 @@
 package de.itzbund.stplf.documents.documentmerger.write;
 
-import de.itzbund.stplf.documents.documentmerger.exception.DocumentMergerException;
-import lombok.extern.log4j.Log4j2;
+import java.io.File;
+import java.io.FileOutputStream;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import de.itzbund.stplf.documents.documentmerger.exception.DocumentMergerException;
+import lombok.extern.log4j.Log4j2;
 
 @Component
 @Log4j2

@@ -1,6 +1,5 @@
 package de.itzbund.stplf.documents.documentmerger;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +35,7 @@ public class DocumentMergerApplication implements CommandLineRunner {
 
 		String inputPath = "";
 		String outputPath = "";
+		String dataPath = "";
 
 		for (int i = 0; i < args.length; ++i) {
 
@@ -45,6 +45,9 @@ public class DocumentMergerApplication implements CommandLineRunner {
 
 			if (args[i].equals("-o") && i < args.length - 1) {
 				outputPath = args[i + 1];
+			}
+			if(args[i].equals("-d") && i<args.length-1) {
+				dataPath = args[i+1];
 			}
 		}
 
@@ -57,12 +60,16 @@ public class DocumentMergerApplication implements CommandLineRunner {
 			log.error("Output parameter -o is missing. Please provide an output path.");
 			return;
 		}
+		
+		if (dataPath.isEmpty()) {
+			log.error("Data parameter -d is missing. Please provide a data path.");
+			return;
+		}
 
 		try {
 			final var inputDoc = this.readDocumentService.readDocument(inputPath);
-
-			//Platzhalter ersetzen WIP
-			replacePlaceholder(inputDoc);
+			
+			MergeService.merge(inputDoc, loadDataService.loadData(dataPath));
 
 			this.writeDocumentService.writeDocument(inputDoc, outputPath);
 		} catch (DocumentMergerException e) {
@@ -70,7 +77,4 @@ public class DocumentMergerApplication implements CommandLineRunner {
 		}
 	}
 	
-	void replacePlaceholder(XWPFDocument inputDoc) {
-		MergeService.merge(inputDoc, "{%platzhalter%}", "Ersetzter Text1");
-	}
 }

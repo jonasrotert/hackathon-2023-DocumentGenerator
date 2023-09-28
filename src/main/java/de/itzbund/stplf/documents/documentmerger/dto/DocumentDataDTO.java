@@ -1,5 +1,7 @@
 package de.itzbund.stplf.documents.documentmerger.dto;
 
+import java.util.Map;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,8 +9,6 @@ import lombok.Data;
 @Builder
 public class DocumentDataDTO {
 
-	private String foo;
-
-	private String bar;
+	Map<String, String> placeholder;
 
 }
