@@ -40,7 +40,9 @@ public class MergeService {
 					Matcher matcher = pattern.matcher(text);
 					if (matcher.find()) {
 						String key = matcher.group();
-						run.setText(text.replace(key, data.getPlaceholder().get(key)), 0);
+						if (data.getPlaceholder().containsKey(key)) {
+							run.setText(text.replace(key, data.getPlaceholder().get(key)), 0);
+						}
 					}
 				}
 			}

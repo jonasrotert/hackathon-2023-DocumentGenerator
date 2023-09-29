@@ -1,0 +1,22 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "{Abs_Anschrift}": "ITZBund, Postfach 30 16 45, 53 196 Bonn",
+  "{Empf_Anrede}": "Frau",
+  "{Empf_Vorname}": "Elke",
+  "{Empf_Nachname}": "Musterfrau",
+  "{Empf_Strasse}": "Hausstrasse",
+  "{Empf_Hausnr}": "1",
+  "{Empf_PLZ}": "70190",
+  "{Empf_Ort}": "Stuttgart",
+  "{Datum_SEPA_Lastschrift}": "09.09.2022",
+  "{Abs_Hausanschrift_Adresse}": "Bernkasteler Str. 8, 53175 Bonn",
+  "{Abs_Hausanschrift}": "Dienstsitz Bonn",
+  "{Bearbeiter_Name}": "Herbert Mueller",
+  "{Bearbeiter_Tel}": "+49 (0) 22899 680 - 1234",
+  "{Bearbeiter_Fax}": "+49 (0) 22899 680 - 5050",
+  "{Bearbeiter_Email}": "herbert.mueller@itzbund.de",
+  "{Empf_IBAN}": "IBAN DE738379290099",
+  "{Empf_BIC}": "GENODEF1HTF",
+  "{Empf_Steuernummer}": "47110/34590",
+  "{ID_BRD}": "DE09 ZZZ 0000 0000 001",
+  "{Mandatsreferenznummer}": "Mustermann001"
+}' http://localhost:8080/ersetzePlatzhalter

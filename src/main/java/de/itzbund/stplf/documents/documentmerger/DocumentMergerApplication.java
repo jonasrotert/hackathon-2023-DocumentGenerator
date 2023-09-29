@@ -1,20 +1,13 @@
 package de.itzbund.stplf.documents.documentmerger;
 
-import de.itzbund.stplf.documents.documentmerger.converter.BinaryDataConverter;
-import de.itzbund.stplf.documents.documentmerger.openoffice.OpenOfficeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import de.itzbund.stplf.documents.documentmerger.exception.DocumentMergerException;
 import de.itzbund.stplf.documents.documentmerger.load.LoadDataService;
-import de.itzbund.stplf.documents.documentmerger.merge.MergeService;
-import de.itzbund.stplf.documents.documentmerger.read.ReadDocumentService;
-import de.itzbund.stplf.documents.documentmerger.write.WriteDocumentService;
+import de.itzbund.stplf.documents.documentmerger.service.Service;
 import lombok.extern.log4j.Log4j2;
-
-import java.io.IOException;
 
 @SpringBootApplication
 @Log4j2
@@ -23,14 +16,6 @@ public class DocumentMergerApplication implements CommandLineRunner {
 	@Autowired
 	private LoadDataService loadDataService;
 
-	@Autowired
-	private ReadDocumentService readDocumentService;
-
-	@Autowired
-	private WriteDocumentService writeDocumentService;
-
-	@Autowired
-	private OpenOfficeClient openOfficeClient;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DocumentMergerApplication.class, args);
@@ -60,32 +45,22 @@ public class DocumentMergerApplication implements CommandLineRunner {
 
 		if (inputPath.isEmpty()) {
 			log.error("Input parameter -i is missing. Please provide an input path.");
-			return;
+			
 		}
 
 		if (outputPath.isEmpty()) {
 			log.error("Output parameter -o is missing. Please provide an output path.");
-			return;
 		}
 		
 		if (dataPath.isEmpty()) {
 			log.error("Data parameter -d is missing. Please provide a data path.");
-			return;
 		}
+		
+		//Service.doSmth(this.loadDataService.loadData(dataPath), inputPath, outputPath);
 
-		try {
-			final var inputDoc = this.readDocumentService.readDocument(inputPath);
-			
-			MergeService.merge(inputDoc, loadDataService.loadData(dataPath));
-
-			// Upload of OpenOffice
-			this.openOfficeClient.uploadFile(this.writeDocumentService.getFileName(outputPath), BinaryDataConverter.convert(inputDoc));
-			this.writeDocumentService.writeDocument(inputDoc, outputPath);
-		} catch (DocumentMergerException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+		
     }
+	
+	
 	
 }
